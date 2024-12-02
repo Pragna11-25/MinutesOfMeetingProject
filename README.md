@@ -342,3 +342,26 @@ In Phase 2 of our project, we plan to enable real-time meeting transcription. Jo
 ## Contributions Welcome: 
 
 👩‍💻 Encouraging contributions from the community to make this tool a game-changer for meetings everywhere. Contribute your ideas and expertise to help us achieve real-time transcription!
+
+
+How to run the application in windows:
+
+All the installation is done through pip so make sure you have pip already installed. Check by typing pip --version
+
+1. Search for Ubuntu in the applications and once opened type 
+   1. sudo service redis-server stop ( If it asks for password it's bhumi )
+   2. redis-server ( to start the redis server )
+2. You need to download ffmpeg and store it under "C:\ffmpeg" folder (https://www.gyan.dev/ffmpeg/builds/ffmpeg-git-full.7z) 
+   1. Open a new terminal and type "ffmpeg -version" and it should display the version of the ffmpeg
+3. Go to the location where the application is available in terminal : ( cd .\OneDrive\Documents\MiniProject\LLM-Minutes-of-Meeting )
+   Both the below commands needs to be executed inside the LLM-Minutes-of-Meeting project folder
+   1. In one terminal run the python application : 
+      python app.py
+   2. In another terminal run the celery app :  
+      celery -A app.celery worker --loglevel=info -f celery_bhumi.logs -c 1 -P solo
+4. Open the broser and go to URL : http://127.0.0.1:5000/
+5. Upload the video or audio and wait for the results
+
+Tips : 
+   1. stop and run celery each time after the mom is generated for a video or audio
+   2. logs are available in celery_bhumi.logs file.
