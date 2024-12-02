@@ -44,8 +44,8 @@ Let's begin installation steps now.
    Open your terminal or command prompt and navigate to the directory where you want to clone the repository. Then run:
 
    ```bash
-   git clone https://github.com/inboxpraveen/LLM-Minutes-of-Meeting
-   cd LLM-Minutes-of-Meeting
+   git clone https://github.com/bhumi039/MinutesOfMeeting
+   cd MinutesOfMeeting
    ```
 
 2. **Install Requirements**

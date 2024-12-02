@@ -11,19 +11,13 @@
 
 <body>
 
-  <div class="header">
-    <button class="header-button" id="notificationButton">
-      <i class="bi bi-bell"></i>&nbsp;&nbsp;Notifications
-    </button>
-    <button class="header-button" id="viewRecordingsButton" onclick="window.location.href='recordings.html'">
-        <i class="bi bi-journal-text"></i>&nbsp;&nbsp;History
-    </button>
-  </div>
-
   <div class="container">
     <div class="main-content">
-        <img src="{{ url_for('static', filename='images/app/mom.png') }}" alt="Meeting" class="background-image">
+        <img src="{{ url_for('static', filename='images/app/sit_logo.png') }}" alt="Meeting" class="background-image">
     </div>
+    <!-- <div class="main-content">
+        <img src="{{ url_for('static', filename='images/app/mom2.png') }}" alt="Meeting" class="background-image">
+    </div> -->
     <div class="footer">
         <button class="meeting-button" id="meetingButton"><i class="bi bi-pen"></i>&nbsp;&nbsp;New Minutes of Meeting</button>
     </div>

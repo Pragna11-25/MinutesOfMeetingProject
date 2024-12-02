@@ -2,6 +2,8 @@ import os
 import subprocess
 from mimetypes import guess_type
 
+import whisper
+
 from global_variables import BASE_DATA_CONVERTED_RECORDINGS_DIRECTORY
 
 def convert_to_wav(input_file_path):
@@ -19,10 +21,15 @@ def convert_to_wav(input_file_path):
 
     command = ["ffmpeg", "-i", input_file_path]
 
+    model = whisper.load_model("base")
+    result = model.transcribe(input_file_path)
+    print(f"Transcription: {result['text']}")
+
     if main_type == 'audio':
         command.extend(["-ac", "1", "-ar", "16000", "-acodec", "pcm_s16le"])
     elif main_type == 'video':
-        command.extend(["-vn", "-ac", "1", "-ar", "16000", "-acodec", "pcm_s16le"])
+        command.extend(["-vn", "-ac", "1", "-ar", "16000", "-acodec",
+                        "pcm_s16le"])
     else:
         print(f"Unsupported MIME main type: {main_type}")
         return ""

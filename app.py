@@ -1,23 +1,22 @@
 import os
-from flask import Flask, render_template, request, redirect, jsonify, send_from_directory
-from flask_cors import CORS
-
-from werkzeug.utils import secure_filename
 
 from celery import Celery
-
-from utils import convert_to_wav
-
+from flask import Flask, render_template, request, redirect, jsonify, \
+    send_from_directory
+from flask_cors import CORS
+from werkzeug.utils import secure_filename
 from global_variables import BASE_DATA_UPLOADED_RECORDINGS_DIRECTORY
-
 
 def make_celery(app):
     celery = Celery(
         app.import_name,
-        backend='redis://localhost:6379/0',
-        broker='amqp://<user>:<password>$@localhost:5672//'
+        backend='redis://localhost:6379',
+        broker='redis://localhost:6379',
     )
     celery.conf.update(app.config)
+    celery.conf.broker_pool_limit = None
+    celery.conf.broker_connection_retry_on_startup = True
+
     class ContextTask(celery.Task):
         def __call__(self, *args, **kwargs):
             with app.app_context():
@@ -39,12 +38,21 @@ def allowed_file(filename):
 @app.route('/check_task/<task_id>')
 def check_task(task_id):
     task = process_audio.AsyncResult(task_id)
+    if task is None or not task.info:
+        return jsonify({'status': 'FAILURE', 'info': {'info': 'Task not found', 'audio_filename': ''}})
+    print("task state: ", task.info)
     response = {
         'status': task.state,
         'info': task.info.get('info', 'COMPLETED'),
         'filename': task.info.get('audio_filename', '')
     }
     return jsonify(response)
+
+# response = {
+#         'status': task.state,
+#         'info': 'task.info.get('info', 'COMPLETED')',
+#         'filename': task.info.get('audio_filename', '')
+#     }
 
 @app.route('/audio/<filename>')
 def send_audio(filename):
@@ -53,6 +61,7 @@ def send_audio(filename):
 @app.route('/results/<task_id>')
 def results(task_id):
     task = process_audio.AsyncResult(task_id)
+    result={'summary': 'NA', 'audio_filename': 'NA'}
     if task.state == 'SUCCESS':
         result = task.result
         file_type = 'video' if result['audio_filename'].endswith(('.mp4', '.mov', '.avi')) else 'audio'
@@ -69,16 +78,19 @@ def upload_file():
         return redirect(request.url)
     
     file = request.files['file']
+   
     if file.filename == '' or not allowed_file(file.filename):
         return redirect(request.url)
+
+    print('File name : ' + file.filename)
     
     filename = secure_filename(file.filename)
     file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     file.save(file_path)
     
-    audio_path = convert_to_wav(file_path)
+    # audio_path = convert_to_wav(file_path)
     
-    task = process_audio.delay(audio_path, filename)
+    task = process_audio.delay(file_path, filename)
     
     return jsonify({'task_id': task.id})
 
