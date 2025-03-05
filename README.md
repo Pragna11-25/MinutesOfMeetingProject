@@ -1,6 +1,5 @@
 # Quick Recap: Instant Meeting Insights
 
-##  Overview
 **Quick Recap: Instant Meeting Insights** is an AI-powered tool that automates meeting summarization using Natural Language Processing (NLP). It extracts key discussion points, decisions, and action items from meeting transcripts or recordings, making meetings more efficient and accessible. The system streamlines communication, reduces manual effort, and enhances productivity in remote and hybrid work environments.
 
 ##  Features
@@ -10,8 +9,6 @@
 - ** User-Friendly Interface** – Upload, process, and retrieve summaries through a simple web interface.
 - ** API Support** – Integrates with external platforms like Slack, Zoom, and Microsoft Teams.
 
----
-
 ##  Tech Stack
 - **Frontend:** React.js, HTML, CSS
 - **Backend:** Flask (Python)
@@ -19,10 +16,8 @@
 - **Authentication:** JWT-based authentication
 - **Task Management:** Celery, Redis
   
----
-
 ## 📂 Project Structure
-```
+
 QuickRecap/
 │── .git/                      # Version control
 │── frontend/                  # Frontend React app
@@ -32,8 +27,6 @@ QuickRecap/
 │── requirements.txt            # Backend dependencies
 │── README.md                  # Project documentation
 ```
-
----
 
 ##  Installation & Setup
 ### 1️⃣ Clone the Repository
@@ -60,9 +53,6 @@ python app.py
 # Start Frontend (React)
 cd frontend
 npm start
-```
-
----
 
 ##  Usage
 1. **Upload** an audio or text file.
@@ -70,17 +60,12 @@ npm start
 3. **Retrieve & download** the structured meeting summary.
 4. **Analyze** extracted insights, key points, and decisions.
 
----
-
 ##  Running AI Models for Summarization
 Ensure the `uploads/` directory exists before running the AI model backend.
 ```sh
 python backend/app.py
 ```
 The API will process the uploaded file and return structured meeting summaries.
-
----
-
 
 ##  License
 This project is licensed under the **MIT License**.
